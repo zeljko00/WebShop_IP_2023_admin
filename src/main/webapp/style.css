@@ -18,11 +18,11 @@ label{
     text-align: left;
     font-size: 20px;
 }
-input{
+.custom-input{
     font-size: 20px;
     margin-left: 5px;
 }
-form{
+.custom-form{
     margin: auto;
 
     text-align: center;
@@ -97,3 +97,64 @@ form{
 #form{text-align: left;
 margin-top:40px; 
 margin-bottom: 40px}
+.app-header{
+	 font-style: italic;
+    font-size: 50px;
+    color: dodgerblue;
+    text-align: center;
+    margin-bottom:30px
+}
+navbar{
+	margin: 20px
+}
+.navbar-a{
+	text-decoration: none;
+	padding:5px;
+	font-size: 20px;
+	color: black;
+	width: 120px;
+	text-align: center;
+	display: inline-block
+}
+.navbar-a:hover {
+	background-color:dodgerblue;
+	color: white
+}
+.link1{
+	border: solid 1px gray
+}
+.link2{
+	border-top: solid 1px gray;
+	border-bottom: solid 1px gray;
+}
+table{
+	border-collapse:collapse;
+	table-layout: fixed;
+}
+tr{
+	height: 30px
+}
+td{
+	border: solid 1px gray;
+	height: 30px;
+	overflow: hidden;
+	padding:3px
+}
+.pos{
+	text-align:center;
+	width: 40px
+}
+#stat-container{
+	min-height: 80vh;
+	margin-left:20px
+}
+#new-category-form{
+	margin-top:30px
+}
+.colored{
+	background-color: dodgerblue;
+	color:white
+}
+.colored-font{
+	color:dodgerblue;
+}

@@ -65,6 +65,7 @@ function search(){
 		list = repo.getMsgs();
 	%>
 	<jsp:include page="WEB-INF/header.jsp" />
+	<jsp:include page="WEB-INF/support-header.jsp" />
 	<div class="info"><%="Službenik za korisničku podršku: " + user.getFirstname() + " " + user.getLastname()%></div>
 	<div class="content-div">
 	<form action="support.jsp" method="GET" id="form">

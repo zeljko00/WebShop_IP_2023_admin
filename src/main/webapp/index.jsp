@@ -28,11 +28,12 @@ if(user.getUsername()!=null && user.getUsername().equals("")==false && user.getP
 </head>
 <body>
 <jsp:include page="WEB-INF/header.jsp" />
+<jsp:include page="WEB-INF/support-header.jsp" />
 <div id="space">
-<form action="index.jsp" method="post">
+<form action="index.jsp" method="post" class="custom-form">
     <label>Korisničko ime:</label><input type="text" name="username"><br>
     <label>Lozinka:</label><input type="password" name="password"><br>
-    <input type="submit" value="Prijavi se">
+    <input type="submit" value="Prijavi se" class="custom-input">
 </form>
 <% if(flag) {%>
 <p class="invalid-cred">Nevalidni kredencijali!</p>
