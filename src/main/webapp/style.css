@@ -1,0 +1,99 @@
+header{
+    height: 100px;
+    font-size: 75px;
+    color: dodgerblue;
+    text-align: center;
+}
+footer{
+    height: 40px;
+    font-size: 25px;
+    color: gray;
+    text-align: center;
+    margin-bottom: 0px;
+}
+label{
+    width: 150px;
+    display: inline-block;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 20px;
+}
+input{
+    font-size: 20px;
+    margin-left: 5px;
+}
+form{
+    margin: auto;
+
+    text-align: center;
+}
+#space{
+    height: calc( 100vh - 390px );
+    margin-top: 250px;
+}body{
+    margin: 0px;
+ }
+ .invalid-cred{
+ text-align:center;
+ color:red;
+ font-size:30;
+ }
+ .info{
+ font-size:30px;
+ color:dodgerblue;
+ padding-left:30px}
+ .message{
+ width: 550px;
+ max-width:550px;
+ margin-left: 100px;
+ text-align:center;
+ }
+ .header{
+ border: solid 1px black;
+ border-radius: 4px;
+ font-size: 20px;
+ line-height:25px;
+ width: 100%;
+ margin-top:10px;
+ padding: 7px
+ 
+ }
+ .info{
+ font-size:25px}
+ .content-div{
+ min-height:80vh
+ }
+ .unread{
+ background-color: #A3C6C4;}
+ .read{
+ background-color: white}
+ .content{
+ padding-left:3px;
+ font-size: 18px}
+ .hidden{
+ text-align:left;}
+ textarea{
+ width: calc( 100% - 8px );
+ max-width:calc( 100% - 8px );
+ height: 80px;
+ font-size: 16px}
+ .answer{
+ margin-top: 8px;
+ font-size: 20px; }
+ body{
+ background: linear-gradient(to right,#fdfbfb, #d0d3d4);}
+ .note{
+ margin-left:100px;
+ font-size:30px;}
+ .succ-note{
+ font-size: 16px}
+#search-bar{
+	margin-left: 100px;
+	font-size: 20px;
+}
+#search-btn{
+	font-size: 20px
+}
+#form{text-align: left;
+margin-top:40px; 
+margin-bottom: 40px}
