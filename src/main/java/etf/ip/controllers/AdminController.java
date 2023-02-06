@@ -126,22 +126,22 @@ public class AdminController extends HttpServlet {
 				} else if ("deleteAttribute".equals(action)) {
 					String idString = request.getParameter("attribute");
 
-					URL obj = new URL(URL + "specificAttributes/" + idString + "?username=" + admin.getUsername() + "&password="
-							+ admin.getPassword());
+					URL obj = new URL(URL + "specificAttributes/" + idString + "?username=" + admin.getUsername()
+							+ "&password=" + admin.getPassword());
 					HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 					con.setRequestMethod("DELETE");
 					int responseCode = con.getResponseCode();
 					System.out.println("GET Response Code :: " + responseCode);
-					category(request.getParameter("category"),admin, request,response);
+					category(request.getParameter("category"), admin, request, response);
 					return;
-				}else if("updateCategory".equals(action)) {
-					String idString=request.getParameter("category");
-					String name=request.getParameter("name");
-					CategoryDTO dto=new CategoryDTO();
+				} else if ("updateCategory".equals(action)) {
+					String idString = request.getParameter("category");
+					String name = request.getParameter("name");
+					CategoryDTO dto = new CategoryDTO();
 					try {
 						dto.setId(Long.parseLong(idString));
 						dto.setName(name);
-						
+
 						URL obj = new URL(URL + "categories?username=" + admin.getUsername() + "&password="
 								+ admin.getPassword());
 						HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -156,22 +156,21 @@ public class AdminController extends HttpServlet {
 						dos.close();
 						int responseCode = con.getResponseCode();
 						System.out.println("GET Response Code :: " + responseCode);
-					}catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					category(idString,admin, request,response);
+					category(idString, admin, request, response);
 					return;
-				}
-				else if("addAttribute".equals(action)) {
-					
-					String idString=request.getParameter("category");
-					String name=request.getParameter("name");
-					System.out.println("adding spec attr category="+idString+" name="+name);
-					SpecificAttributeDTO dto=new SpecificAttributeDTO();
+				} else if ("addAttribute".equals(action)) {
+
+					String idString = request.getParameter("category");
+					String name = request.getParameter("name");
+					System.out.println("adding spec attr category=" + idString + " name=" + name);
+					SpecificAttributeDTO dto = new SpecificAttributeDTO();
 					try {
 						dto.setCategory(Long.parseLong(idString));
 						dto.setName(name);
-						
+
 						URL obj = new URL(URL + "specificAttributes?username=" + admin.getUsername() + "&password="
 								+ admin.getPassword());
 						HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -186,10 +185,139 @@ public class AdminController extends HttpServlet {
 						dos.close();
 						int responseCode = con.getResponseCode();
 						System.out.println("GET Response Code :: " + responseCode);
-					}catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					category(idString,admin, request,response);
+					category(idString, admin, request, response);
+					return;
+				} else if ("user".equals(action)) {
+					String id = request.getParameter("user");
+					user(id, admin, request, response);
+					return;
+				} else if ("addUser".equals(action)) {
+					UserDTO temp = new UserDTO();
+					temp.setCity(request.getParameter("city"));
+					temp.setEmail(request.getParameter("email"));
+					temp.setFirstname(request.getParameter("firstname"));
+					temp.setLastname(request.getParameter("lastname"));
+					temp.setPassword(request.getParameter("password"));
+					temp.setUsername(request.getParameter("username"));
+				
+					System.out.println(temp);
+					if (temp.getCity() == null || temp.getUsername() == null || temp.getPassword() == null
+							|| temp.getFirstname() == null || temp.getLastname() == null || temp.getEmail() == null
+							|| "".equals(temp.getCity()) || "".equals(temp.getEmail()) || "".equals(temp.getUsername())
+							|| "".equals(temp.getPassword()) || "".equals(temp.getFirstname())
+							|| "".equals(temp.getLastname())) {
+						System.out.println("\"Popunite sva polja!\"");
+						request.setAttribute("note", "Popunite sva polja!");
+					} else if (temp.getUsername().length() < 5)
+						request.setAttribute("note", "Korisnicko ime mora imati minimalno 5 karaktera");
+					else if (temp.getPassword().length() < 8)
+						request.setAttribute("note", "Lozinka mora imati minimalno 8 karaktera!");
+					else if (temp.getPassword().contains("$") == false && temp.getPassword().contains("#") == false
+							&& temp.getPassword().contains("%") == false && temp.getPassword().contains("&") == false
+							&& temp.getPassword().contains("_") == false)
+						request.setAttribute("note",
+								"Lozinka mora imati minimalno jedan specijalni karakter (#,$;%;&,_)");
+					else if (temp.getEmail().contains("@") == false)
+						request.setAttribute("note", "Unesite validan email!");
+					else
+						try {
+
+							URL obj = new URL(URL + "users/register");
+							HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+							con.setRequestMethod("POST");
+							con.setRequestProperty("Content-Type", "application/json");
+							con.setDoOutput(true);
+							OutputStream dos = con.getOutputStream();
+							Gson gson = new Gson();
+							System.out.println(gson.toJson(temp));
+							dos.write(gson.toJson(temp).getBytes());
+							dos.flush();
+							dos.close();
+							int responseCode = con.getResponseCode();
+							if (responseCode != HttpURLConnection.HTTP_OK) { // success
+								request.setAttribute("note", "Neuspjesno kreiranje!");
+							} else
+								request.setAttribute("note", "Novi korisnik je uspjesno kreiran!");
+							System.out.println("GET Response Code :: " + responseCode);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					users(admin, request);
+					request.getRequestDispatcher("WEB-INF/admin-users.jsp").forward(request, response);
+					return;
+
+				} else if ("deleteUser".equals(action)) {
+					String id = request.getParameter("user");
+
+					URL obj = new URL(URL + "users/" + id + "?username=" + admin.getUsername() + "&password="
+							+ admin.getPassword());
+					HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+					con.setRequestMethod("DELETE");
+					int responseCode = con.getResponseCode();
+					System.out.println("GET Response Code :: " + responseCode);
+
+					users(admin, request);
+					request.getRequestDispatcher("WEB-INF/admin-users.jsp").forward(request, response);
+					return;
+
+				} else if ("updateUser".equals(action)) {
+					String id = request.getParameter("user");
+
+					UserDTO temp = new UserDTO();
+					temp.setCity(request.getParameter("city"));
+					temp.setEmail(request.getParameter("email"));
+					temp.setFirstname(request.getParameter("firstname"));
+					temp.setLastname(request.getParameter("lastname"));
+					temp.setPassword(request.getParameter("password"));
+					temp.setId(Long.parseLong(id));
+					System.out.println(temp);
+					if (temp.getCity() == null || temp.getPassword() == null
+							|| temp.getFirstname() == null || temp.getLastname() == null || temp.getEmail() == null
+							|| "".equals(temp.getCity()) || "".equals(temp.getEmail())
+							|| "".equals(temp.getPassword()) || "".equals(temp.getFirstname())
+							|| "".equals(temp.getLastname())) {
+						System.out.println("\"Popunite sva polja!\"");
+						request.setAttribute("note", "Popunite sva polja!");
+					} 
+					else if (temp.getPassword().length() < 8)
+						request.setAttribute("note", "Lozinka mora imati minimalno 8 karaktera!");
+					else if (temp.getPassword().contains("$") == false && temp.getPassword().contains("#") == false
+							&& temp.getPassword().contains("%") == false && temp.getPassword().contains("&") == false
+							&& temp.getPassword().contains("_") == false)
+						request.setAttribute("note",
+								"Lozinka mora imati minimalno jedan specijalni karakter (#,$;%;&,_)");
+					else if (temp.getEmail().contains("@") == false)
+						request.setAttribute("note", "Unesite validan email!");
+					else {
+						try {
+
+							URL obj = new URL(URL + "users");
+							HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+							con.setRequestMethod("PUT");
+							con.setRequestProperty("Content-Type", "application/json");
+							con.setDoOutput(true);
+							OutputStream dos = con.getOutputStream();
+							Gson gson = new Gson();
+							System.out.println(gson.toJson(temp));
+							dos.write(gson.toJson(temp).getBytes());
+							dos.flush();
+							dos.close();
+							int responseCode = con.getResponseCode();
+							if (responseCode != HttpURLConnection.HTTP_OK) { // success
+								request.setAttribute("note", "Neuspjesno azuriranje!");
+							} else
+								request.setAttribute("note", "Informacije azurirane!");
+							System.out.println("GET Response Code :: " + responseCode);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					if (request.getAttribute("note") == null || request.getAttribute("note").equals(""))
+						request.setAttribute("note", "-");
+					user(id, admin, request, response);
 					return;
 				}
 			}
@@ -290,12 +418,15 @@ public class AdminController extends HttpServlet {
 				List<UserDTO> list = Arrays.asList(gson.fromJson(buffer.toString(), UserDTO[].class));
 
 				request.setAttribute("users", list);
+
 			} else
 				request.setAttribute("users", new ArrayList<String>());
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("users", new ArrayList<String>());
 		}
+		if (request.getAttribute("note") == null || request.getAttribute("note").equals(""))
+			request.setAttribute("note", "-");
 	}
 
 	private void category(String id, User admin, HttpServletRequest request, HttpServletResponse response)
@@ -311,6 +442,21 @@ public class AdminController extends HttpServlet {
 			}
 		}
 		request.getRequestDispatcher("WEB-INF/admin-categories.jsp").forward(request, response);
+	}
+
+	private void user(String id, User admin, HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		users(admin, request);
+		System.out.println(id);
+		List<UserDTO> temp = (List<UserDTO>) request.getAttribute("users");
+		for (UserDTO c : temp) {
+			if (Long.toString(c.getId()).equals(id)) {
+				request.setAttribute("appUser", c);
+				request.getRequestDispatcher("WEB-INF/user.jsp").forward(request, response);
+				return;
+			}
+		}
+		request.getRequestDispatcher("WEB-INF/admin-users.jsp").forward(request, response);
 	}
 
 }
